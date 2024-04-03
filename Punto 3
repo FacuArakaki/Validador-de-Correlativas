@@ -1,0 +1,30 @@
+public class Main {
+    public static void main(String[] args) {
+        Materia matematicas = new Materia();
+        Materia historia = new Materia();
+        Materia fisica = new Materia();
+
+        matematicas.agregarMateriaNecesaria(fisica);
+        historia.agregarMateriaNecesaria(matematicas);
+
+        Alumno alumno = new Alumno();
+
+        alumno.aprobarMateria(matematicas);
+
+        Inscripcion inscripcion = new Inscripcion(alumno);
+        inscripcion.agregarMateria(matematicas);
+
+        if (inscripcion.aprobada()) {
+            System.out.println("El alumno cumple con las condiciones para inscribirse en Matemáticas.");
+        } else {
+            System.out.println("El alumno no cumple con las condiciones para inscribirse en Matemáticas.");
+        }
+    }
+}
+
+/*
+Si realizo la prueba con la inscripción q se muestra acá arriba, la respuesta al método de aprobada() será verdadera. 
+Pero si en vez de tener "matematicas" tengo "historia" en la inscripción, la respuesta será falsa
+
+Se probó y un funciona correctamente
+*/
