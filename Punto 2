@@ -1,0 +1,135 @@
+//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
+// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import java.util.ArrayList;
+
+/*
+Voy a importar la libreria java.util.ArrayList que me va a permitir manejar la listas de materias que
+voy a utilizar a lo largo del programa. A su vez q me brinda métodos como add, remove o addAll.
+Aclaración, esto lo averigué de internet.
+ */
+
+class Inscripcion {
+    private Alumno alumno;
+    private ArrayList<Materia> materiasAInscribirse;
+
+    // constructor de la inscripcion
+    public Inscripcion(Alumno alumno) {
+        this.alumno = alumno;
+        this.materiasAInscribirse = new ArrayList<>();
+    }
+
+    // Método para agregar materias a la lista de materias a inscribirse
+    public void agregarMateria(Materia materia) {
+        materiasAInscribirse.add(materia);
+    }
+
+    // Método para eliminar materias de la lista de materias a inscribirse
+    public void eliminarMateria(Materia materia) {
+        materiasAInscribirse.remove(materia);
+    }
+
+    // Método para delegar la verificación de condiciones de inscripción al alumno
+    public boolean aprobada() {
+        ArrayList<Materia> materiasNecesarias = new ArrayList<>();
+        for (Materia materia : materiasAInscribirse) {
+            materiasNecesarias.addAll(materia.getMateriasNecesarias());
+        }
+        return alumno.cumpleCondicionesInscripcion(materiasNecesarias);
+    }
+
+    // Getters y setters
+    public Alumno getAlumno() {
+        return alumno;
+    }
+
+    public void setAlumno(Alumno alumno) {
+        this.alumno = alumno;
+    }
+
+    public ArrayList<Materia> getMateriasAInscribirse() {
+        return materiasAInscribirse;
+    }
+
+    public void setMateriasAInscribirse(ArrayList<Materia> materiasAInscribirse) {
+        this.materiasAInscribirse = materiasAInscribirse;
+    }
+}
+
+class Alumno {
+    private ArrayList<Materia> materiasAprobadas;
+
+    public Alumno() {
+        this.materiasAprobadas = new ArrayList<>();
+    }
+
+    // Método para aprobar una materia
+    public void aprobarMateria(Materia materia) {
+        materiasAprobadas.add(materia);
+    }
+
+    // Método para verificar si cumple con las condiciones de inscripción
+    public boolean cumpleCondicionesInscripcion(ArrayList<Materia> materiasNecesarias) {
+        for (Materia materia : materiasNecesarias) { // funciona como una función lambda, o eso creo
+            if (!materiasAprobadas.contains(materia)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // Getters y setters
+    public ArrayList<Materia> getMateriasAprobadas() {
+        return materiasAprobadas;
+    }
+
+    public void setMateriasAprobadas(ArrayList<Materia> materiasAprobadas) {
+        this.materiasAprobadas = materiasAprobadas;
+    }
+}
+
+class Materia {
+    private ArrayList<Materia> materiasNecesarias;
+
+    public Materia() {
+        this.materiasNecesarias = new ArrayList<>();
+    }
+
+    // Método para agregar una materia necesaria
+    public void agregarMateriaNecesaria(Materia materia) {
+        materiasNecesarias.add(materia);
+    }
+
+    // Getters y setters
+    public ArrayList<Materia> getMateriasNecesarias() {
+        return materiasNecesarias;
+    }
+
+    public void setMateriasNecesarias(ArrayList<Materia> materiasNecesarias) {
+        this.materiasNecesarias = materiasNecesarias;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Materia matematicas = new Materia();
+        Materia historia = new Materia();
+        Materia fisica = new Materia();
+
+        matematicas.agregarMateriaNecesaria(fisica);
+        historia.agregarMateriaNecesaria(matematicas);
+
+        Alumno alumno = new Alumno();
+
+        alumno.aprobarMateria(matematicas);
+
+        Inscripcion inscripcion = new Inscripcion(alumno);
+        inscripcion.agregarMateria(matematicas);
+
+        if (inscripcion.aprobada()) {
+            System.out.println("El alumno cumple con las condiciones para inscribirse en Matemáticas.");
+        } else {
+            System.out.println("El alumno no cumple con las condiciones para inscribirse en Matemáticas.");
+        }
+    }
+}
+
